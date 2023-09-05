@@ -2,9 +2,11 @@ import {
   Entity, 
   Column, 
   PrimaryGeneratedColumn,
-  ManyToOne 
+  ManyToOne, 
+  OneToMany
 } from 'typeorm';
 import { Categoria } from '../categoria/categoria.entity';
+import { Item } from '../listaCompras/entities/item.entity';
 
 @Entity()
 export class Produto {
@@ -17,10 +19,16 @@ export class Produto {
   @Column()
   nota: string;
 
+  @Column()
+  preco: number;
+
   @Column({nullable: true})
   imagem: string;
 
   @ManyToOne(() => Categoria, (categoria) => categoria.produtos)
   categoria: Categoria;
+
+  @OneToMany(() => Item, (item) => item.produto)
+  items: Item[]
 
 }
