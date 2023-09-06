@@ -18,6 +18,10 @@ export class ListaService {
     private readonly produtoRepository: Repository<Produto>
   ) {}
 
+  listar(): Promise<Lista[]> {
+    return this.listaRepository.find({});
+  }
+
   criar(listaDto: ListaDto): Promise<Lista> {
     let lista = new Lista();
     lista.nome = listaDto.nome;

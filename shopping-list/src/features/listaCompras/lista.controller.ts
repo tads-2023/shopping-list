@@ -5,11 +5,16 @@ import { Item } from './entities/item.entity';
 import { Lista } from './entities/lista.entity';
 import { ListaService } from './lista.service';
 
-@Controller('lists-compras')
+@Controller('listas-compra')
 export class ListaController {
   constructor(
     private readonly listaService: ListaService
   ) {}
+
+  @Get()
+  listar(): Promise<Lista[]> {
+    return this.listaService.listar();
+  }
 
   @Post()
   criar(@Body() listaDto: ListaDto): Promise<Lista> {
