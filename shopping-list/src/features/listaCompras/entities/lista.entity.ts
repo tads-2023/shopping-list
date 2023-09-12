@@ -17,6 +17,8 @@ export class Lista {
   @Column()
   estado: string;
 
-  @OneToMany(() => Item, (item) => item.lista)
+  @OneToMany(() => Item, (item) => item.lista, {
+    eager: true
+  })
   items: Item[]
 }

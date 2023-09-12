@@ -16,7 +16,9 @@ export class Item {
   @Column()
   quantidade: number;
 
-  @ManyToOne(() => Produto, (produto) => produto.items)
+  @ManyToOne(() => Produto, (produto) => produto.items, {
+    eager: true
+  })
   produto: Produto;
 
   @ManyToOne(() => Lista, (lista) => lista.items)

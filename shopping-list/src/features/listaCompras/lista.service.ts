@@ -37,7 +37,7 @@ export class ListaService {
     return this.listaRepository.save(lista);
   }
 
-  async adicionarItem(id: number, itemDto: ItemDto): Promise<Item> {
+  async adicionarItem(id: number, itemDto: ItemDto): Promise<Lista> {
     let lista = await this.listaRepository.findOneBy({id: id});
     let produto = await this.produtoRepository.findOneBy({id: itemDto.produtoId});
     if(!(lista && produto)) {
@@ -48,6 +48,7 @@ export class ListaService {
     item.produto = produto;
     item.lista = lista;
 
-    return this.itemRepository.save(item);
+    await this.itemRepository.save(item);
+    return this.listaRepository.findOneBy({id: id});
   }
 }

@@ -1,23 +1,20 @@
 <script setup>
-import {ref} from 'vue';
+import { ref, computed } from 'vue';
+import { useListasStore } from '../stores/listas';
+
+const store = useListasStore();
 
 const modalAberto = ref(false);
 const nomeLista = ref('');
+const listaCompras = computed(() => store.listaCompra);
 
 const handleShopModal = () => {
   modalAberto.value = !modalAberto.value;
 }
 
 const onListaFormSubmit = () => {
-  fetch("http://localhost:3000/listas-compra", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({
-      nome: nomeLista.value 
-    })
-  }).then(() => {
-    modalAberto.value = false;
-  })
+  store.criarLista(nomeLista.value);
+  modalAberto.value = false;
 };
 
 </script>
@@ -29,10 +26,18 @@ const onListaFormSubmit = () => {
       </svg>
     </button>
     <el-dialog v-model="modalAberto" title="Shopping list">
-      <form @submit.prevent="onListaFormSubmit">
-        <input v-model="nomeLista" type="text" name="nome">
-        <button>Salvar</button>
-      </form>
+      <div v-if="!listaCompras.id">
+        <form @submit.prevent="onListaFormSubmit">
+          <input v-model="nomeLista" type="text" name="nome">
+          <button>Salvar</button>
+        </form>
+      </div>
+      <div v-else>
+        <h1>{{ listaCompras.nome }}</h1>
+        <div v-for="item in listaCompras.items" :key="item.id">
+          {{ item.produto.nome }}
+        </div>
+      </div>
     </el-dialog>
   </div>
 </template>

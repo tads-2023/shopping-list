@@ -30,7 +30,7 @@ export class ListaController {
   adicionar(
     @Param('id') id: number, 
     @Body() itemDto: ItemDto
-  ): Promise<Item> {
+  ): Promise<Lista> {
     return this.listaService.adicionarItem(id, itemDto);
   }
 }
