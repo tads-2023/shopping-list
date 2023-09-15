@@ -18,6 +18,10 @@ export class ListaService {
     private readonly produtoRepository: Repository<Produto>
   ) {}
 
+  detalhes(id: number): Promise<Lista> {
+    return this.listaRepository.findOneBy({id: id});
+  }
+
   listar(): Promise<Lista[]> {
     return this.listaRepository.find({});
   }

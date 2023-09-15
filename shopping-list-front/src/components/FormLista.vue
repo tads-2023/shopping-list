@@ -8,8 +8,19 @@ const modalAberto = ref(false);
 const nomeLista = ref('');
 const listaCompras = computed(() => store.listaCompra);
 
+store.$subscribe((mutation, state) => {
+  if(state.checkoutUrl) {
+    window.location.href = state.checkoutUrl; 
+  }
+});
+
 const handleShopModal = () => {
   modalAberto.value = !modalAberto.value;
+};
+
+const handleGoToCheckout = () => {
+  store.criarCheckout();
+
 }
 
 const onListaFormSubmit = () => {
@@ -38,6 +49,7 @@ const onListaFormSubmit = () => {
           {{ item.produto.nome }}
         </div>
       </div>
+      <button @click="handleGoToCheckout">Fazer Checkout!</button>
     </el-dialog>
   </div>
 </template>

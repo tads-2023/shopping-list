@@ -4,7 +4,8 @@ export const useListasStore = defineStore('listas', {
   state: () => (
     {
       listaCompra: {},
-      historico: [], 
+      historico: [],
+      checkoutUrl: ''
     }
   ),
   actions: {
@@ -32,6 +33,13 @@ export const useListasStore = defineStore('listas', {
 
       this.listaCompra = await resposta.json();
       console.log(this.listaCompra);
+    },
+
+    async criarCheckout() {
+      const request = await fetch(`http://localhost:3000/listas-compra/${this.listaCompra.id}/checkout`);
+      const resposta = await request.json();
+      console.log(resposta);
+      this.checkoutUrl = resposta.url;
     }
   },
 })

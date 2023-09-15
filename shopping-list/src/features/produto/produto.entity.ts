@@ -21,6 +21,9 @@ export class Produto {
 
   @Column()
   preco: number;
+  
+  @Column()
+  precoStripe: string;
 
   @Column({nullable: true})
   imagem: string;

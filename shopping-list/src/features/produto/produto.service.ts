@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
 import { Produto } from './produto.entity';
 import { Categoria } from '../categoria/categoria.entity';
 import { ProdutoDto } from './produto.dto';
+import { Injector } from '@nestjs/core/injector/injector';
+import { StripeService } from '../listaCompras/stripe.service';
 
 
 @Injectable()
@@ -13,6 +15,8 @@ export class ProdutoService {
     private readonly produtoRepositoy: Repository<Produto>,
     @InjectRepository(Categoria)
     private readonly categoriaRepositoy: Repository<Categoria>,
+    @Inject(StripeService)
+    private readonly stripeService: StripeService
   ) {}
 
   listar(termo: string): Promise<Produto[]> {
@@ -36,6 +40,9 @@ export class ProdutoService {
     produto.imagem = produtoDto.imagem;
     produto.categoria = await this.categoriaRepositoy.findOneBy({id: produtoDto.categoriaId})
 
+    const resposta = await this.stripeService.criarProduto(produto);
+    console.log(resposta);
+    produto.precoStripe = resposta.default_price;
     return this.produtoRepositoy.save(produto);
   }
 }
